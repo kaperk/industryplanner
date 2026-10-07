@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>RealIndustry Planner</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="logo" aria-hidden="true">⚙</span>
+      <div>
+        <h1>RealIndustry Planner</h1>
+        <p class="sub" id="dataInfo"></p>
+      </div>
+    </div>
+    <div class="topbar-actions">
+      <button class="ghost" id="exportBtn" title="Copy your progress as JSON">Export progress</button>
+      <button class="ghost" id="importBtn" title="Paste progress JSON">Import</button>
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="panel progress" aria-label="Your progress">
+      <div class="tabs" role="tablist">
+        <button role="tab" class="tab active" data-tab="research" id="tabResearch">Research</button>
+        <button role="tab" class="tab" data-tab="buildings" id="tabBuildings">Buildings</button>
+        <button role="tab" class="tab" data-tab="unlimited" id="tabUnlimited">Unlimited</button>
+      </div>
+
+      <div class="tab-body" id="researchPane">
+        <div class="toolbar">
+          <input type="search" id="researchSearch" placeholder="Filter research…" aria-label="Filter research">
+        </div>
+        <div class="toolbar small">
+          <label>Research all up to level
+            <select id="levelSelect"></select>
+          </label>
+          <button id="levelApply">Apply</button>
+          <button class="ghost" id="researchClear">Clear</button>
+        </div>
+        <p class="hint">Ticking a research also ticks its prerequisites; unticking removes anything that depends on it.</p>
+        <div class="list" id="researchList"></div>
+      </div>
+
+      <div class="tab-body hidden" id="buildingsPane">
+        <div class="toolbar">
+          <input type="search" id="buildingSearch" placeholder="Filter buildings…" aria-label="Filter buildings">
+        </div>
+        <label class="toggle">
+          <input type="checkbox" id="autoBuild">
+          <span>Treat every unlocked building as built</span>
+        </label>
+        <div class="toolbar small">
+          <button id="buildUnlocked">Mark all unlocked as built</button>
+          <button class="ghost" id="buildingClear">Clear</button>
+        </div>
+        <div class="list" id="buildingList"></div>
+      </div>
+
+      <div class="tab-body hidden" id="unlimitedPane">
+        <div class="toolbar">
+          <input type="search" id="unlimitedSearch" placeholder="Filter items…" aria-label="Filter items">
+        </div>
+        <p class="hint">Items you have plenty of. The planner treats them as always on hand, never plans recipes to make them, and shows how much of each a plan uses.</p>
+        <div class="toolbar small">
+          <button data-preset="utilities">Water + electricity</button>
+          <button data-preset="basics">Common basics</button>
+          <button data-preset="raw">All raw</button>
+          <button class="ghost" data-preset="clear">Clear</button>
+        </div>
+        <div class="list" id="unlimitedList"></div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <section class="panel target">
+        <h2>What do you want to make?</h2>
+        <div class="target-row">
+          <div class="search-wrap">
+            <input type="search" id="targetSearch" placeholder="Search items, buildings or research…" autocomplete="off" aria-label="Search targets">
+            <ul class="suggest hidden" id="suggest" role="listbox"></ul>
+          </div>
+          <input type="number" id="targetQty" min="0" step="any" value="1" aria-label="Quantity">
+          <button class="primary" id="addTarget">Add</button>
+        </div>
+        <div class="targets" id="targets"></div>
+        <div class="target-row options">
+          <label>Optimise for
+            <select id="objective"></select>
+          </label>
+          <span class="calc-state" id="calcState"></span>
+        </div>
+      </section>
+
+      <section id="results"></section>
+    </main>
+  </div>
+
+  <dialog id="itemDialog">
+    <form method="dialog" class="dialog-close"><button aria-label="Close">✕</button></form>
+    <div id="itemBody"></div>
+  </dialog>
+
+  <dialog id="ioDialog">
+    <form method="dialog" class="dialog-close"><button aria-label="Close">✕</button></form>
+    <h3 id="ioTitle"></h3>
+    <textarea id="ioText" rows="10" spellcheck="false"></textarea>
+    <div class="toolbar"><button class="primary" id="ioApply">Apply</button></div>
+  </dialog>
+
+  <script src="data.js"></script>
+  <script src="planner.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
